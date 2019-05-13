@@ -1,6 +1,6 @@
 const String clazzTpl = """
 import 'dart:convert';
-import 'package:annotation_route/route.dart';
+import 'package:annotation_route/router_annotation.dart';
 {{#refs}}
 import '{{{path}}}';
 {{/refs}}

@@ -1,4 +1,4 @@
-import 'package:annotation_route/route.dart';
+import 'package:annotation_route/router_annotation.dart';
 
 @ARoute(alias: [
   ARouteAlias(url: 'myapp://pagec'),

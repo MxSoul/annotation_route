@@ -1,11 +1,13 @@
+import 'package:annotation_route/src/interceptor_collector.dart';
 import 'package:mustache4dart/mustache4dart.dart';
-import 'collector.dart';
+import 'arouter_collector.dart';
 import 'page_config_map_util.dart';
 import 'tpl.dart';
 
 class Writer {
-  Collector collector;
-  Writer(this.collector);
+  ARouterCollector arouterCollector;
+  InterceptorCollector interceptionCollector;
+  Writer(this.arouterCollector, this.interceptionCollector);
 
   String instanceCreated() {
     return instanceCreatedTpl;
@@ -22,9 +24,9 @@ class Writer {
       } else {
         return;
       }
-      buffer.writeln('case ${clazz}: return new ${clazz}(option);');
+      buffer.writeln('case ${clazz}: return new ${clazz}.router(option);');
     };
-    collector.routerMap
+    arouterCollector.routerMap
         .forEach((String url, List<Map<String, dynamic>> configList) {
       configList.forEach(writeClazzCase);
     });
@@ -37,12 +39,12 @@ class Writer {
     final Function addRef = (String path) {
       refs.add(<String, String>{'path': path});
     };
-    collector.importList.forEach(addRef);
+    arouterCollector.importList.forEach(addRef);
     return render(clazzTpl, <String, dynamic>{
       'refs': refs,
       'instanceCreated': instanceCreated(),
       'instanceFromClazz': instanceFromClazz(),
-      'routerMap': collector.routerMap.toString()
+      'routerMap': arouterCollector.routerMap.toString(),
     });
   }
 }
